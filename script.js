@@ -2,12 +2,10 @@ const input = document.getElementById('input');
         const button = document.getElementById('btn');
         const container = document.getElementById('container');
 
-        // Function to fetch weather icon
         function getWeatherIcon(iconCode) {
             return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
         }
 
-        // Function to get weather description
         function getWeatherIcon(iconCode) {
             const iconMap = {
                 '01d': 'fas fa-sun',
@@ -33,16 +31,12 @@ const input = document.getElementById('input');
             return iconMap[iconCode] || 'fas fa-cloud';
         }
 
-        // Function to fetch weather data
         function fetchWeather() {
             let city = input.value.trim();
-            
-            // Don't proceed if input is empty
+
             if (!city) return;
             
             let api = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=b93340c2946398f0c43ec9988b827c0f";
-            
-            // Show loading state
             container.innerHTML = `
                 <div class="loading">
                     <i class="fas fa-spinner"></i>
@@ -53,13 +47,11 @@ const input = document.getElementById('input');
             fetch(api)
                 .then((res) => res.json())
                 .then((data) => {
-                    // Calculate temperature in Celsius
                     const tempCelsius = (data.main.temp - 273.15).toFixed(1);
                     const feelsLikeCelsius = (data.main.feels_like - 273.15).toFixed(1);
                     const iconCode = data.weather[0].icon;
                     const iconClass = getWeatherIcon(iconCode);
-                    
-                    // Create HTML content with weather data
+
                     container.innerHTML = `
                         <div class="weather-card">
                             <h2 class="location">${data.name}, ${data.sys.country}</h2>
@@ -98,24 +90,18 @@ const input = document.getElementById('input');
                         </div>
                     `;
                 });
-            
-            // Clear the input field after search
+
             input.value = '';
         }
 
-        // Event listener for button click
         button.addEventListener("click", fetchWeather);
-
-        // Event listener for Enter key press
         input.addEventListener("keypress", (event) => {
             if (event.key === "Enter") {
-                // Prevent default form submission behavior
                 event.preventDefault();
                 fetchWeather();
             }
         });
 
-        // Set focus on the input field when page loads
         window.addEventListener('load', () => {
             input.focus();
         });
